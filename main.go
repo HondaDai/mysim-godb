@@ -383,7 +383,7 @@ func main() {
     flag.Float64Var(&rsvalue, "value", -1, "value")
     flag.Parse()
 
-    dat, err := ioutil.ReadFile("db.conf")
+    dat, err := ioutil.ReadFile("godb.conf")
     if err != nil {
         panic(err)
     }
