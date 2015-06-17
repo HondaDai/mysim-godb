@@ -388,6 +388,8 @@ func main() {
         panic(err)
     }
 
+    fmt.Print(string(dat))
+
     conf := make(map[string]string)
     for _, v := range strings.Split(string(dat), "\n") {
         // fmt.Println(v+"--")
@@ -398,7 +400,7 @@ func main() {
     conf["database_uri"] = conf["database_uri"]+conf["database_name"]+"?sslmode=disable"
     // fmt.Println(conf["database_uri"])
 
-    // fmt.Print(string(dat))
+    
 
     // config := RsConfig{seeds: []int{0,1}, params: []string{"a", "b"}, dests: []string{"p", "q"}}
     
