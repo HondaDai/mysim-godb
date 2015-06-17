@@ -279,12 +279,12 @@ func (RD RsDb) create(db_name string, conf RsConfig) {
  
 }
 
-func NewRsDB(schema_name string) *RsDb {
+func NewRsDB(database_uri string, database_name string, schema_name string) *RsDb {
 
-    database_name := "test_123"
+    // database_name := ""
 
-    uri := fmt.Sprintf("postgres://postgres:@localhost/%s?sslmode=disable", database_name)
-    db, err := sql.Open("postgres", uri)
+    // uri := fmt.Sprintf("postgres://postgres:mysim1234@localhost/test_123?sslmode=disable")
+    db, err := sql.Open("postgres", database_uri)
     if err != nil {
         log.Fatalf("Open database error: %s\n", err)
     }
@@ -383,7 +383,7 @@ func main() {
     flag.Float64Var(&rsvalue, "value", -1, "value")
     flag.Parse()
 
-    dat, err := ioutil.ReadFile("godb.conf")
+    dat, err := ioutil.ReadFile("db.conf")
     if err != nil {
         panic(err)
     }
@@ -395,13 +395,14 @@ func main() {
 
         conf[ strings.Trim(kv[0], " \r\n") ] = strings.Trim(kv[1], " \r\n")
     }
-    // fmt.Println(conf["program_name"])
+    conf["database_uri"] = conf["database_uri"]+conf["database_name"]+"?sslmode=disable"
+    // fmt.Println(conf["database_uri"])
 
     // fmt.Print(string(dat))
 
     // config := RsConfig{seeds: []int{0,1}, params: []string{"a", "b"}, dests: []string{"p", "q"}}
     
-    RD := *NewRsDB(schema)
+    RD := *NewRsDB(conf["database_uri"], conf["database_name"], schema)
     // RD.insert_cwnd()
     // log.Println(RD.exist_schema("hi"))
     // log.Println(RD.exist_schema("dddd"))
