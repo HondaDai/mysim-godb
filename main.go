@@ -67,8 +67,8 @@ func (RD RsDb) insert_updown(param string, dest string, seed int, client_id int,
     return RD.insert("updown", param, dest, seed, client_id, time, value, note)
 }
 
-func (RD RsDb) insert_simset(param string, dest string, seed int, note string) bool {
-    return RD.insert("simset", param, dest, seed, 0, 0, 0, note)
+func (RD RsDb) insert_simset(param string, dest string, seed int, client_id int, time float64, value float64, note string) bool {
+    return RD.insert("simset", param, dest, seed, client_id, time, value, note)
 }
 
 func (RD RsDb) insert(table_name string, param string, dest string, seed int, client_id int, time float64, value float64, note string) bool {
@@ -391,7 +391,7 @@ func main() {
     fmt.Print(string(dat))
 
     conf := make(map[string]string)
-    for _, v := range strings.Split(string(dat), "\n") {
+    for _, v := range strings.Split(strings.Trim(string(dat), " \r\n"), "\n") {
         // fmt.Println(v+"--")
         kv := strings.Split(v, "=")
 
@@ -466,7 +466,7 @@ func main() {
             log.Println(`param == "" || dest == "" || seed == -1 || note == ""`)
             os.Exit(2)
         }
-        RD.insert_simset(param, dest, seed, note)
+        RD.insert_simset(param, dest, seed, client_id, rstime, rsvalue, note)
     case "exist_schema":
         if schema == "" {
             log.Println(`schema == ""`)
